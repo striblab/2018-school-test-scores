@@ -1,0 +1,53 @@
+{
+  "about this file": "This document defines configuration for this project that is not content or copy.",
+
+  "projectIdentifier": "2018-school-test-scores",
+
+  "data": {
+    "content": "./content.json",
+    "pkg": "./package.json"
+  },
+
+  "cms": {
+    "id": "NEEDS-CMS-ID-IN-CONFIG.JSON",
+    "pages": ["other", "cms-ids"],
+    "lcds": ["lcd-id-for-first", "lcd-id-for-second"],
+    "rewriteMapping": {
+      "article-lcd-body-content": "_index-content.html"
+    }
+  },
+
+
+  "styles": {
+    "globals": [
+    ]
+  },
+  "js": {
+    "globals": [
+      "https://cdn.polyfill.io/v2/polyfill.min.js",
+      "https://static.startribune.com/assets/libs/pym.js/1.3.2/pym.v1.min.js",
+      "https://static.startribune.com/assets/libs/lodash/4.17.4/lodash.min.js"
+    ]
+  },
+  "publishToken": "d856c02f99a56da75a45923e650dc048",
+  "publish": {
+    "default": {
+      "bucket": "static.startribune.com",
+      "path": "news/projects-staging/all/2018-school-test-scores",
+      "url": "http://static.startribune.com/news/projects-staging/all/2018-school-test-scores/",
+      "cacheSeconds": 30
+    },
+    "testing": {
+      "bucket": "stribtest-bucket",
+      "path": "news/projects/2018-school-test-scores",
+      "url": "https://s3.amazonaws.com/stribtest-bucket/news/projects/2018-school-test-scores/",
+      "cacheSeconds": 30
+    },
+    "production": {
+      "bucket": "static.startribune.com",
+      "path": "news/projects/all/2018-school-test-scores",
+      "url": "http://static.startribune.com/news/projects/all/2018-school-test-scores/",
+      "cacheSeconds": 600
+    }
+  }
+}
