@@ -1,9 +1,285 @@
 
 <div class="strib-styles ssa ssb ssc">
   <section class="container-lg">
-    <p>Content goes here.</p>
+    <header>
+      <div class="hero">
+        <h1>This is a Big Deal</h1>
+
+        <p class="lead container-sm">Here's a lead-in paragraph to let you know what about to happen.</p>
+
+        <div class="byline">
+          <address>By
+            <a rel="author" href="http://example.com/author">John Doe</a>
+            and
+            <a rel="author" href="http://example.com/author">Jane Doh</a>
+          </address>
+          <span class="spacer"></span>
+          Star Tribune
+          <span class="spacer-alt"></span>
+          <time pubdate datetime="2017-07-30T16:00:00">July 30, 2017 &mdash; 4:00pm</time>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="filtering">
+        <span>How have</span>
+
+        <select bind:value="district">
+          <option value="all">All districts</option>
+
+          {#each scoresByDistrict as district (id)}
+            <option value="{ district.id }">{ district.name }</option>
+
+          {/each}
+        </select>
+
+        <span>including</span>
+
+        <select bind:value="school">
+          <option value="all">All schools</option>
+
+          {#each scoresBySchools as school}
+            <option value="{ school.id }">{ school.name }</option>
+          {/each}
+        </select>
+
+        <span>beaten the odds?</span>
+      </div>
+
+      <div class="district">
+        <div class="section-topper">District</div>
+        <h1 class="has-section-topper">
+          { selectedDistrict ? selectedDistrict.name : 'All districts' }
+        </h1>
+
+        <p class="district-info">
+          There are { scoresBySchools.length } schools in this district.
+          {#if selectedDistrict}
+            This district is located in { selectedDistrict.location }.
+          {/if}
+        </p>
+
+        <div class="row">
+          <div class="col col-100 col-md-50">
+            <h2 class="has-sub-title">Math</h2>
+            <div class="sub-title">{ currentYear }-{ currentYear + 1 } school year</div>
+
+            <ul>
+              <li>Beating the odds:
+                { percent(oddsCategoryBreakdown.m['3'], oddsCategoryBreakdown.m.total) }%</li>
+              <li>As expected:
+                { percent(oddsCategoryBreakdown.m['2'], oddsCategoryBreakdown.m.total) }%</li>
+              <li>Falling behind:
+                { percent(oddsCategoryBreakdown.m['1'], oddsCategoryBreakdown.m.total) }%</li>
+            </ul>
+
+            <p><em>Maybe a line graph showing the change in percent of schools who beat the odds over time.</em></p>
+          </div>
+
+          <div class="col col-100 col-md-50">
+            <h2 class="has-sub-title">Reading</h2>
+            <div class="sub-title">{ currentYear }-{ currentYear + 1 } school year</div>
+
+            <ul>
+              <li>Beating the odds:
+                { percent(oddsCategoryBreakdown.r['3'], oddsCategoryBreakdown.r.total) }%</li>
+              <li>As expected:
+                { percent(oddsCategoryBreakdown.r['2'], oddsCategoryBreakdown.r.total) }%</li>
+              <li>Falling behind:
+                { percent(oddsCategoryBreakdown.r['1'], oddsCategoryBreakdown.r.total) }%</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {#if selectedSchool}
+        <div class="school">
+          <div class="section-topper">School</div>
+          <h2 class="has-section-topper has-sub-title">
+            { selectedSchool.name }
+          </h2>
+
+          <h3 class="sub-title">{ selectedSchool.type }</h3>
+
+          <p>For the { selectedSchool.years[0].year }-{ selectedSchool.years[0].year + 1 } school year, there were { formatNumber(selectedSchool.years[0].enrollment) } students enrolled, { formatNumber(round(selectedSchool.years[0].pctMinority * 100)) }%  which were minorities and { formatNumber(round(selectedSchool.years[0].pctPoverty * 100)) }% are in poverty.</p>
+
+          <div class="row">
+            <div class="col col-100 col-md-50">
+              <h3 class="has-sub-title">Math</h3>
+              <div class="sub-title">{ currentYear }-{ currentYear + 1 } school year</div>
+
+              {#if keyBy(selectedSchool.years[0].subjects, 'subject').m}
+                <p><strong>{ categoryNames[keyBy(selectedSchool.years[0].subjects, 'subject').m.oddsCategory] }</strong></p>
+                <p>Predicted proficient: { keyBy(selectedSchool.years[0].subjects, 'subject').m.predictedPro }</p>
+                <p>Actual proficient: { keyBy(selectedSchool.years[0].subjects, 'subject').m.percentPro }</p>
+              {:else}
+                <em>No math data</em>
+              {/if}
+            </div>
+
+            <div class="col col-100 col-md-50">
+              <h3 class="has-sub-title">Reading</h3>
+              <div class="sub-title">{ currentYear }-{ currentYear + 1 } school year</div>
+
+              {#if keyBy(selectedSchool.years[0].subjects, 'subject').r}
+                <p><strong>{ categoryNames[keyBy(selectedSchool.years[0].subjects, 'subject').r.oddsCategory] }</strong></p>
+                <p>Predicted proficient: { keyBy(selectedSchool.years[0].subjects, 'subject').r.predictedPro }</p>
+                <p>Actual proficient: { keyBy(selectedSchool.years[0].subjects, 'subject').r.percentPro }</p>
+              {:else}
+                <em>No reading data</em>
+              {/if}
+
+            </div>
+          </div>
+        </div>
+      {/if}
+    </main>
+
+    <footer class="article-footer">
+      <h1>Credits</h1>
+
+      <ul class="credits">
+        <li>Edited by John DoeEditor</li>
+        <li>Data analysis by Jane DoeData</li>
+        <li>Design and development by Jem DoeDesign</li>
+      </ul>
+
+      <h1>Methodology</h1>
+
+      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+
+    </footer>
   </section>
 </div>
+
+<script>
+  // Dependencies
+  import {
+    filter,
+    find,
+    flatten,
+    sortBy,
+    groupBy,
+    mapValues,
+    map,
+    sum
+  } from "lodash";
+
+  // Svelte object
+  export default {
+    computed: {
+      // Flatten districts to schools
+      scoresBySchools: ({ selectedDistricts, district }) => {
+        if (!selectedDistricts) {
+          return [];
+        }
+
+        return sortBy(
+          flatten(
+            map(selectedDistricts, d => {
+              return d.schools;
+            })
+          ),
+          "name"
+        );
+      },
+
+      // The districts currently selected as an array
+      selectedDistricts: ({ scoresByDistrict, district }) => {
+        return district === "all" || !district
+          ? scoresByDistrict
+          : filter(scoresByDistrict, { id: district });
+      },
+
+      // The currently selected district, if there is one
+      selectedDistrict: ({ scoresByDistrict, district }) => {
+        return district === "all" || !district
+          ? undefined
+          : find(scoresByDistrict, { id: district });
+      },
+
+      // Get selected school
+      selectedSchool: ({ scoresBySchools, school }) => {
+        return find(scoresBySchools, { id: school });
+      },
+
+      // Category breakdown for selected schools
+      oddsCategoryBreakdown: ({ scoresBySchools, currentYear }) => {
+        let breakdown = {};
+
+        scoresBySchools.forEach(s => {
+          if (s.years && find(s.years, { year: currentYear })) {
+            find(s.years, { year: currentYear }).subjects.forEach(subject => {
+              breakdown[subject.subject] = breakdown[subject.subject] || {};
+              breakdown[subject.subject][subject.oddsCategory] =
+                breakdown[subject.subject][subject.oddsCategory] || 0;
+              breakdown[subject.subject][subject.oddsCategory]++;
+            });
+          }
+        });
+
+        breakdown = mapValues(breakdown, categories => {
+          categories.total = sum(map(categories));
+          return categories;
+        });
+
+        return breakdown;
+      }
+    },
+
+    // Small helper functions
+    helpers: {
+      formatNumber(input) {
+        return input;
+      },
+
+      percent(v, total, decimals = 1) {
+        if (!total || !v) {
+          return 0;
+        }
+
+        return (
+          Math.round((v / total) * 100 * Math.pow(10, decimals)) /
+          Math.pow(10, decimals)
+        );
+      },
+
+      round(input, decimals = 1) {
+        return (
+          Math.round(input * Math.pow(10, decimals)) / Math.pow(10, decimals)
+        );
+      },
+
+      keyBy(input, key = "id") {
+        if (!input.length) {
+          return {};
+        }
+
+        let keyed = {};
+
+        input.forEach(i => {
+          keyed[i[key]] = i;
+        });
+
+        return keyed;
+      }
+    },
+
+    data() {
+      return {
+        district: "all",
+        school: "all",
+        currentYear: 2017,
+        categoryNames: {
+          ["1"]: "Falling behind",
+          ["2"]: "As expected",
+          ["3"]: "Beating the odds"
+        }
+      };
+    }
+  };
+</script>
 
 
 

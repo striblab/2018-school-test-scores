@@ -1,3 +1,48 @@
 /**
  * Project specific styling.
  */
+
+.section-topper {
+  font-weight: bold;
+  font-size: 0.85em;
+  margin-bottom: 0.25em;
+}
+
+.has-section-topper {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.sub-title {
+  padding-top: 0;
+  margin-top: 0;
+  margin-bottom: 1em;
+  font-size: 1em;
+}
+
+.has-sub-title {
+  margin-bottom: 0.15em;
+  padding-bottom: 0;
+}
+
+.filtering {
+  padding: 1em;
+  margin-bottom: 2em;
+  background-color: map-get($grays, "lighter");
+  text-align: center;
+
+  select {
+    display: inline-block;
+    max-width: 15em;
+    margin: 0 0.5em;
+    vertical-align: baseline;
+  }
+}
+
+.district {
+  margin-bottom: 2em;
+}
+
+.school {
+  margin-bottom: 2em;
+}

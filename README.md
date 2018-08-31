@@ -2,7 +2,17 @@
 
 A look at school test scores in the state
 
+## Data
 
+Data copmiled from the Minnesota Department of Education via the [MDE data center](http://w20.education.state.mn.us/MDEAnalytics/Data.jsp), specifically the Math and Test scores found in the [Assessment and Growth Files](http://w20.education.state.mn.us/MDEAnalytics/DataTopic.jsp?TOPICID=1).
+
+### Processing
+
+The data analysis and compilation happens in the [Schools folder of `data-documentation`](https://github.com/striblab/data-documentation/blob/master/Schools/process_test_score_data.R).
+
+It depends on where your data is, but to get the data output from that script to this project, do something like:
+
+    cp ../data-documentation/Schools/outputs/beating-the-odds-mca-dataviz.csv sources/test-score-analysis.csv
 
 ## Publishing
 

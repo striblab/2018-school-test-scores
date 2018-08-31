@@ -16,6 +16,7 @@
 
 // Dependencies
 const gulp = require('gulp');
+const gutil = require('gulp-util');
 const js = require('./lib/gulp-js.js');
 const styles = require('./lib/gulp-styles.js');
 const html = require('./lib/gulp-html.js');
@@ -26,6 +27,14 @@ const cms = require('./lib/gulp-cms.js');
 const tasks = require('./lib/gulp-tasks.js');
 const publish = require('./lib/gulp-publish.js');
 const googleDrive = require('./lib/gulp-google-drive.js');
+
+// Just in case
+process.on('unhandledRejection', error => {
+  gutil.log(gutil.colors.red(error.stack));
+  // console.error(
+  //   new gutil.PluginError('svelte-render', error, { showStack: true })
+  // );
+});
 
 // Make default just list of tasks
 gulp.task('default', tasks.list);
