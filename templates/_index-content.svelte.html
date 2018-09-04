@@ -149,6 +149,8 @@
                 <strong>{ percent(oddsCategoryBreakdown.m['1'], oddsCategoryBreakdown.m.total) }</strong>%
               </li>
             </ul>
+
+            <LineChart />
           </div>
 
           <div class="col col-100 col-md-50">
@@ -203,9 +205,14 @@
     map,
     sum
   } from "lodash";
+  import LineChart from "./_line-chart.svelte.html";
 
   // Svelte object
   export default {
+    components: {
+      LineChart
+    },
+
     computed: {
       // Flatten districts to schools
       scoresBySchools: ({ selectedDistricts, district }) => {

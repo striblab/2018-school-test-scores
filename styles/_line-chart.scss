@@ -1,0 +1,27 @@
+.line-chart {
+  svg text {
+    @include font-styles("benton-sans");
+
+    font-size: 2em;
+    stroke: #232323;
+    color: #232323;
+    fill: #232323;
+  }
+
+  .line-chart-axis {
+    stroke: #232323;
+    color: #232323;
+  }
+
+  .line-chart-label {
+    text-anchor: middle;
+  }
+
+  .line-chart-data {
+    stroke: blue;
+    stroke-width: 5;
+    fill: none;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+}
