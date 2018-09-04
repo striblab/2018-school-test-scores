@@ -39,6 +39,21 @@
   }
 }
 
+.data-points {
+  margin: 0 0 1em;
+  padding: 0;
+
+  li {
+    font-size: 1.25em;
+  }
+
+  .data-point {
+    font-size: 2em;
+    font-weight: bold;
+    display: inline-block;
+  }
+}
+
 .district {
   margin-bottom: 2em;
 }
