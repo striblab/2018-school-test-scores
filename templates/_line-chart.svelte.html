@@ -1,109 +1,119 @@
 <figure class="line-chart">
-  {#if title}
-    <figcaption>
+  <figcaption class="sr-only">
+    { title }
+  </figcaption>
 
-    </figcaption>
-  {/if}
-
-  <div class="figure-content">
-    <svg class="line-chart-svg" viewBox="0 0 { width } { height }" style="width: 100%; height: 100%;" ref:svgContainer>
-      <g class="line-chart-container" transform="translate({ padding.left }, { padding.top })">
-        <g class="line-chart-axis line-chart-axis-y" ref:yAxis>
-          {#if yLabel}
-            <text class="line-chart-label line-chart-axis-y-label" transform="rotate(-90)" x="{ 0 - (chartHeight / 2) }" y="{ 0 - padding.left }" dy="1em">{ yLabel }</text>
-          {/if}
-        </g>
-
-        <g class="line-chart-axis line-chart-axis-x" transform="translate(0, { chartHeight })" ref:xAxis>
-          <text class="line-chart-label line-chart-axis-x-label" transform="translate({ chartWidth / 2 }, { padding.bottom })" >X axis</text>
-        </g>
-
-        <g class="line-chart-data" ref:data></g>
-      </g>
-    </svg>
-  </div>
+  <div class="chart-container" ref:chartContainer></div>
 </figure>
 
 <script>
-  /* global d3 */
+  import { isNaN } from "lodash";
+
+  /* global d3, c3 */
   export default {
     oncreate() {
-      this.drawYAxis();
-      this.drawXAxis();
-      this.drawLine();
+      this.drawChart();
+    },
+
+    onupdate({ changed, current, previous }) {
+      if (changed.data) {
+        this.drawChart();
+      }
+    },
+
+    ondestroy() {
+      if (this.get().chart) {
+        this.set({ chart: this.get().chart.destroy() });
+      }
     },
 
     methods: {
-      drawLine() {
-        let line = d3
-          .line()
-          .x(d => {
-            return this.get().xaxis(d[this.get().x]);
-          })
-          .y(d => {
-            return this.get().yaxis(d[this.get().y]);
+      drawChart() {
+        let chart = this.get().chart;
+        console.log(chart);
+
+        if (chart) {
+          // Update
+          //chart.unload();
+          chart.load({
+            columns: [this.get().xData, this.get().yData]
           });
-        d3.select(this.refs.data)
-          .append("path")
-          .datum(this.get().data)
-          .attr("d", line);
-      },
 
-      drawXAxis() {
-        if (!this.get().data) {
           return;
         }
 
-        let a = d3
-          .scaleLinear()
-          .rangeRound([0, this.get().chartWidth])
-          .domain(
-            d3.extent(this.get().data, d => {
-              return d[this.get().x];
-            })
-          );
-        this.set({ xaxis: a });
-        d3.select(this.refs.xAxis).call(d3.axisBottom(a));
+        chart = c3.generate({
+          bindto: this.refs.chartContainer,
+          color: {
+            pattern: this.get().colors
+          },
+          padding: {
+            right: 10
+          },
+          data: {
+            x: this.get().xLabel,
+            columns: [this.get().xData, this.get().yData]
+          },
+          axis: {
+            x: {
+              min: this.parseNumber(this.get().xMin),
+              max: this.parseNumber(this.get().xMax),
+              tick: {
+                outer: false
+              },
+              padding: {
+                left: 0,
+                right: 0
+              }
+            },
+            y: {
+              min: this.parseNumber(this.get().yMin),
+              max: this.parseNumber(this.get().yMax),
+              padding: 0,
+              label: this.get().yLabel,
+              tick: {
+                outer: false
+              }
+            }
+          },
+          grid: {
+            x: {
+              show: true
+            },
+            y: {
+              show: true
+            }
+          },
+          legend: {
+            show: false
+          },
+          tooltip: {
+            show: false
+          }
+        });
+        this.set({ chart });
       },
 
-      drawYAxis() {
-        if (!this.get().data) {
-          return;
+      parseNumber(input) {
+        if (isNaN(parseFloat(input))) {
+          return undefined;
         }
 
-        let a = d3
-          .scaleLinear()
-          .rangeRound([this.get().chartHeight, 0])
-          .domain([
-            0,
-            d3.max(this.get().data, d => {
-              return d[this.get().y];
-            })
-          ]);
-        this.set({ yaxis: a });
-        d3.select(this.refs.yAxis).call(d3.axisLeft(a));
+        return parseFloat(input);
       }
     },
 
     computed: {
-      padding: ({ height, width, paddingPercent }) => {
-        return {
-          top: height * paddingPercent.top,
-          bottom: height * paddingPercent.bottom,
-          left: width * paddingPercent.left,
-          right: width * paddingPercent.right
-        };
+      xData({ data, xLabel, xProp }) {
+        return [xLabel].concat(data.map(d => d[xProp]));
       },
-
-      chartHeight: ({ height, padding }) => height - padding.top - padding.bottom,
-      chartWidth: ({ width, padding }) => width - padding.left - padding.right
+      yData({ data, yLabel, yProp }) {
+        return [yLabel].concat(data.map(d => d[yProp]));
+      }
     },
 
     data() {
       return {
-        width: 800,
-        height: 600,
-        paddingPercent: { top: 0.05, right: 0.05, bottom: 0.1, left: 0.1 },
         data: [
           { x: 1, y: 2 },
           { x: 2, y: 8 },
@@ -114,8 +124,11 @@
           { x: 7, y: 1 },
           { x: 8, y: 9 }
         ],
-        x: "x",
-        y: "y"
+        xProp: "x",
+        yProp: "y",
+        xLabel: "XXXXXX",
+        yLabel: "YYYYYY",
+        colors: ["#857aaa", "#5bbf48"]
       };
     }
   };

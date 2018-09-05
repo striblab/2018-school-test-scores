@@ -2,26 +2,20 @@
   svg text {
     @include font-styles("benton-sans");
 
-    font-size: 2em;
     stroke: #232323;
     color: #232323;
     fill: #232323;
   }
 
-  .line-chart-axis {
-    stroke: #232323;
-    color: #232323;
+  .c3-chart-line .c3-line {
+    stroke-width: 4;
   }
 
-  .line-chart-label {
-    text-anchor: middle;
+  .c3-chart-line .c3-shapes circle {
+    r: 5;
   }
 
-  .line-chart-data {
-    stroke: blue;
-    stroke-width: 5;
-    fill: none;
-    stroke-linejoin: round;
-    stroke-linecap: round;
+  .tick line {
+    display: none;
   }
 }

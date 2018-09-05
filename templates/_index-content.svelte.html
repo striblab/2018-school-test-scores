@@ -80,6 +80,20 @@
                     { round(keyBy(selectedSchool.years[0].subjects, 'subject').m.percentPro * 100) }%
                   </li>
                 </ul>
+
+                <LineChart
+                  title="Math proficiency over the years for { selectedSchool.name }"
+                  data="{ schoolSubjectData(selectedSchool.years, 'm', 'percentPro', 100) }"
+                  xProp="year"
+                  yProp="percentPro"
+                  xLabel="School year"
+                  yLabel="Percent proficient in Math"
+                  yMin="0"
+                  yMax="100"
+                  xMin="2005"
+                  xMax="2017"
+                  colors="{ ['#857aaa'] }"
+                />
               {:else}
                 <em>No math data</em>
               {/if}
@@ -106,6 +120,20 @@
                     { round(keyBy(selectedSchool.years[0].subjects, 'subject').r.percentPro * 100) }%
                   </li>
                 </ul>
+
+                <LineChart
+                  title="Reading proficiency over the years for { selectedSchool.name }"
+                  data="{ schoolSubjectData(selectedSchool.years, 'r', 'percentPro', 100) }"
+                  xProp="year"
+                  yProp="percentPro"
+                  xLabel="School year"
+                  yLabel="Percent proficient in Reading"
+                  yMin="0"
+                  yMax="100"
+                  xMin="2005"
+                  xMax="2017"
+                  colors="{['#5bbf48']}"
+                />
               {:else}
                 <em>No reading data</em>
               {/if}
@@ -149,8 +177,6 @@
                 <strong>{ percent(oddsCategoryBreakdown.m['1'], oddsCategoryBreakdown.m.total) }</strong>%
               </li>
             </ul>
-
-            <LineChart />
           </div>
 
           <div class="col col-100 col-md-50">
@@ -312,6 +338,21 @@
         });
 
         return keyed;
+      },
+
+      // Make specific set of school subject data
+      schoolSubjectData(years, subject, property = "percentPro", multiplier) {
+        if (!years || !years.length) {
+          return [];
+        }
+
+        return years.map(y => {
+          let v = find(y.subjects, { subject })[property];
+          return {
+            year: y.year,
+            [property]: multiplier ? v * multiplier : v
+          };
+        });
       }
     },
 
