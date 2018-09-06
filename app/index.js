@@ -17,17 +17,18 @@ import Content from '../templates/_index-content.svelte.html';
 
 // Get data for client
 window
-  .fetch('./assets/data/scores-by-district.json')
+  .fetch('./assets/data/scores-by-schools.json')
   .then(response => {
     return response.json();
   })
-  .then(scoresByDistrict => {
-    console.log(scoresByDistrict);
+  .then(scores => {
+    console.log(scores);
     const app = new Content({
       hydrate: true,
       target: document.querySelector('.main-app-container'),
       data: {
-        scoresByDistrict
+        scoresBySchools: scores
+        //districts: scores.districts
       }
     });
 
