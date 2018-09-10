@@ -1,5 +1,5 @@
-<figure class="line-chart">
-  <figcaption class="sr-only">
+<figure class="scatter-plot">
+  <figcaption class="">
     { title }
   </figcaption>
 
@@ -7,7 +7,7 @@
 </figure>
 
 <script>
-  import { isNaN } from "lodash";
+  import { isNaN, filter } from "lodash";
 
   /* global d3, c3 */
   export default {
@@ -16,7 +16,7 @@
     },
 
     onupdate({ changed, current, previous }) {
-      if (changed.data || changed.dataConfig) {
+      if (changed.data) {
         this.drawChart();
       }
     },
@@ -35,9 +35,7 @@
           // Update
           //chart.unload();
           chart.load({
-            columns: this.get().dataConfig
-              ? this.get().dataConfig.columns
-              : [this.get().xData, this.get().yData]
+            columns: [this.get().xData, this.get().yData]
           });
 
           return;
@@ -51,21 +49,45 @@
           padding: {
             right: 10
           },
-          data: this.get().dataConfig
-            ? this.get().dataConfig
-            : {
-                x: this.get().xLabel,
-                columns: [this.get().xData, this.get().yData]
-              },
-          point: {
-            r: 4
+          data: {
+            // x: this.get().xLabel,
+            // y: this.get().yLabel,
+            columns: filter([
+              this.get().xData,
+              this.get().yData,
+              this.get().regression ? this.get().regressionDataX : null,
+              this.get().regression ? this.get().regressionDataY : null
+            ]),
+            type: "scatter",
+            types: this.get().regression
+              ? {
+                  regressiony: "line"
+                }
+              : undefined,
+            xs: this.get().regression
+              ? {
+                  [this.get().yLabel]: this.get().xLabel,
+                  regressiony: "regressionx"
+                }
+              : undefined,
+            points: false
           },
           axis: {
             x: {
+              type: "indexed",
+              height: 45,
               min: this.parseNumber(this.get().xMin),
               max: this.parseNumber(this.get().xMax),
+              label: {
+                text: this.get().xLabel,
+                position: "outer-center"
+              },
               tick: {
-                outer: false
+                outer: false,
+                fit: false,
+                culling: {
+                  max: 8
+                }
               },
               padding: {
                 left: 0,
@@ -81,7 +103,10 @@
                 position: "outer-middle"
               },
               tick: {
-                outer: false
+                outer: false,
+                culling: {
+                  max: 8
+                }
               }
             }
           },
@@ -94,7 +119,7 @@
             }
           },
           legend: {
-            show: true
+            show: false
           },
           tooltip: {
             show: false
@@ -118,6 +143,28 @@
       },
       yData({ data, yLabel, yProp }) {
         return [yLabel].concat(data.map(d => d[yProp]));
+      },
+      regressionDataY({ xMin, xMax, regression }) {
+        if (
+          regression === undefined ||
+          xMin === undefined ||
+          xMax === undefined
+        ) {
+          return;
+        }
+
+        return ["regressiony", regression(xMin), regression(xMax)];
+      },
+      regressionDataX({ xMin, xMax, regression }) {
+        if (
+          regression === undefined ||
+          xMin === undefined ||
+          xMax === undefined
+        ) {
+          return;
+        }
+
+        return ["regressionx", xMin, xMax];
       }
     },
 

@@ -1,137 +1,207 @@
 
 <div class="strib-styles ssa ssb ssc">
-  <section class="container-lg">
-    <header>
+  <section>
+    <header class="container-lg">
       <div class="hero">
-        <h1>This is a Big Deal</h1>
+        <h1>Beating the Odds</h1>
 
-        <p class="lead container-sm">Here's a lead-in paragraph to let you know what about to happen.</p>
+        <p class="lead container-md">A Star Tribune analysis of standardized test scores to determine which schools are doing better than expected..</p>
 
         <div class="byline">
           <address>By
-            <a rel="author" href="http://example.com/author">John Doe</a>
+            <a rel="author" href="http://www.startribune.com/maryjo-webster/303594441/">MaryJo Webster</a>
             and
-            <a rel="author" href="http://example.com/author">Jane Doh</a>
+            <a rel="author" href="http://www.startribune.com/alan-palazzolo/440928273/">Alan Palazzolo</a>
           </address>
+
           <span class="spacer"></span>
           Star Tribune
           <span class="spacer-alt"></span>
-          <time pubdate datetime="2017-07-30T16:00:00">July 30, 2017 &mdash; 4:00pm</time>
+          <time pubdate datetime="2018-09-13T00:00:00">Septermber 13, 2018 &mdash; 12:00am</time>
         </div>
       </div>
     </header>
 
     <main>
-      <div class="filtering">
-        <span>Find your school:</span>
+      <div class="intro">
+        <div class="intro-text container-md">
+          <p>If you rank Minnesota’s public schools based on the percentage of students who meet or exceed proficiency expectations in math or reading on the Minnesota Comprehensive Assessments, the list generally will start with schools that have high concentrations of wealth and end with schools with high concentrations of poverty.  This long-standing and well-documented relationship between household income and school achievement means that schools serving large numbers of poor or other disadvantaged students have a different perspective on what achievement looks like. To level this playing field, the Star Tribune each year runs a regression analysis to compare each school’s proficiency rates in math and reading to what they were expected to achieve based on the school’s poverty level.</p>
 
-        <select bind:value="school">
-          <option value="all">All schools</option>
+          <p>The lines on the charts below show the expected achievement level dropping as poverty levels get higher, and the dots show how Minnesota’s public schools fared on last year’s tests. The majority have proficiency rates that are about where you’d expect them to be. And then there are some schools that do considerably better than expected and others that fall short of expectations.</p>
+        </div>
 
-          {#each scoresBySchools as school}
-            <option value="{ school.id }">{ school.name }</option>
-          {/each}
-        </select>
-      </div>
-
-      {#if selectedSchool}
-        <div class="school">
-          <div class="section-topper">School</div>
-          <h2 class="has-section-topper has-sub-title">
-            { selectedSchool.name }
-          </h2>
-
-          <h3 class="sub-title">{ selectedSchool.type }</h3>
-
-          <p>For the { selectedSchool.years[0].year }-{ selectedSchool.years[0].year + 1 } school year, there were <strong>{ formatNumber(selectedSchool.years[0].enrollment) } students</strong> enrolled, { formatNumber(round(selectedSchool.years[0].pctMinority * 100)) }%  which were minorities and { formatNumber(round(selectedSchool.years[0].pctPoverty * 100)) }% get free or reduced lunch.</p>
-
+        <div class="intro-charts container-xl">
           <div class="row">
             <div class="col col-100 col-md-50">
-              <h3 class="has-sub-title">Math</h3>
-              <div class="sub-title">{ currentYear }-{ currentYear + 1 } school year</div>
-
-              {#if keyBy(selectedSchool.years[0].subjects, 'subject').m}
-                <ul class="data-points">
-                  <li>
-                    <span class="data-point">
-                      { categoryNames[keyBy(selectedSchool.years[0].subjects, 'subject').m.oddsCategory] }
-                    </span>
-                  </li>
-
-                  <li>
-                    Predicted proficient: { round(keyBy(selectedSchool.years[0].subjects, 'subject').m.predictedPro * 100) }%
-                  </li>
-
-                  <li>
-                    Actual proficient:
-                    { round(keyBy(selectedSchool.years[0].subjects, 'subject').m.percentPro * 100) }%
-                  </li>
-                </ul>
-
-                <LineChart
-                  title="Math proficiency over the years for { selectedSchool.name }"
-                  data="{ schoolSubjectData(selectedSchool.years, 'm', 'percentPro', 100) }"
-                  xProp="year"
-                  yProp="percentPro"
-                  xLabel="School year"
-                  yLabel="Percent proficient in Math"
-                  yMin="0"
-                  yMax="100"
-                  xMin="2012"
-                  xMax="2017"
-                  colors="{ ['#857aaa'] }"
-                />
-              {:else}
-                <em>No math data</em>
-              {/if}
+              <ScatterPlot
+                data="{ schoolsPovertyScatter(scoresBySchools, 'm', null, currentYear) }"
+                xMin="{ 0 }"
+                xMax="{ 100 }"
+                yMin="{ 0 }"
+                yMax="{ 100 }"
+                xProp="pctPoverty"
+                yProp="percentPro"
+                xLabel="Percent of students who receive free or reduced-price lunch"
+                yLabel="Percent of students found proficient in Math"
+                title="Math"
+                regression="{ (x) => x * -0.5278627 + (0.79540900 * 100) }"
+                colors="{ [colorMath, colorPredicted].reverse() }" />
             </div>
 
             <div class="col col-100 col-md-50">
-              <h3 class="has-sub-title">Reading</h3>
-              <div class="sub-title">{ currentYear }-{ currentYear + 1 } school year</div>
-
-              {#if keyBy(selectedSchool.years[0].subjects, 'subject').r}
-                <ul class="data-points">
-                  <li>
-                    <span class="data-point">
-                      { categoryNames[keyBy(selectedSchool.years[0].subjects, 'subject').r.oddsCategory] }
-                    </span>
-                  </li>
-
-                  <li>
-                    Predicted proficient: { round(keyBy(selectedSchool.years[0].subjects, 'subject').r.predictedPro * 100) }%
-                  </li>
-
-                  <li>
-                    Actual proficient:
-                    { round(keyBy(selectedSchool.years[0].subjects, 'subject').r.percentPro * 100) }%
-                  </li>
-                </ul>
-
-                <LineChart
-                  title="Reading proficiency over the years for { selectedSchool.name }"
-                  data="{ schoolSubjectData(selectedSchool.years, 'r', 'percentPro', 100) }"
-                  xProp="year"
-                  yProp="percentPro"
-                  xLabel="School year"
-                  yLabel="Percent proficient in Reading"
-                  yMin="0"
-                  yMax="100"
-                  xMin="2012"
-                  xMax="2017"
-                  colors="{['#5bbf48']}"
-                />
-              {:else}
-                <em>No reading data</em>
-              {/if}
-
+              <ScatterPlot
+                data="{ schoolsPovertyScatter(scoresBySchools, 'r', null, currentYear) }"
+                xMin="{ 0 }"
+                xMax="{ 100 }"
+                yMin="{ 0 }"
+                yMax="{ 100 }"
+                xProp="pctPoverty"
+                yProp="percentPro"
+                xLabel="Percent of students who receive free or reduced-price lunch"
+                yLabel="Percent of students found proficient in Reading"
+                title="Reading"
+                regression="{ (x) => x * -0.5589525 + (0.8037092 * 100) }"
+                colors="{ [colorReading, colorPredicted].reverse() }" />
             </div>
           </div>
         </div>
-      {/if}
+      </div>
+
+      <div class="school-search container-lg">
+        <div class="container-md">
+          <p>Use the search tool below to find out whether your school is beating the odds.</p>
+        </div>
+
+        <div class="filtering">
+          <span>Find your school:</span>
+
+          <select bind:value="school">
+            <option value="all">Select school</option>
+
+            {#each scoresBySchools as school}
+              <option value="{ school.id }">{ school.name }</option>
+            {/each}
+          </select>
+        </div>
+
+        {#if selectedSchool}
+          <div class="school">
+            <div class="container-md">
+              <h2 class="text-center">
+                { selectedSchool.name }
+              </h2>
+
+              <p>
+                This <strong>{ selectedSchool.type.toLowerCase() }</strong> school is 1 of X schools in the the XBLANK district which saw X% beat the odds, Y% as expected, and Z% falling behind.
+              </p>
+
+              <p>
+                For the { selectedSchool.years[0].year }-{ selectedSchool.years[0].year + 1 } school year, there were <strong>{ formatNumber(selectedSchool.years[0].enrollment) } students</strong> enrolled in this school, { formatNumber(round(selectedSchool.years[0].pctMinority * 100, 0)) }% were minorities and { formatNumber(round(selectedSchool.years[0].pctPoverty * 100, 0)) }% get free or reduced-price lunch.
+              </p>
+            </div>
+
+            <div class="row">
+              <div class="col col-100 col-md-50">
+                <h3>Math</h3>
+
+                {#if keyBy(selectedSchool.years[0].subjects, 'subject').m}
+                  <h4>{ selectedSchool.years[0].year }-{ selectedSchool.years[0].year + 1 } school year</h4>
+
+                  <p>
+                    Overall, the students who took this test did
+                    <strong class="highlight">
+                      { categoryNames[keyBy(selectedSchool.years[0].subjects, 'subject').m.oddsCategory] }
+                    </strong>
+                    for the year; given our model they were predicted to have a proficiency passing rate of
+                    { round(keyBy(selectedSchool.years[0].subjects, 'subject').m.predictedPro * 100, 0) }%
+                    but actually had a rate of
+                    { round(keyBy(selectedSchool.years[0].subjects, 'subject').m.percentPro * 100, 0) }%.
+                  </p>
+
+                  <h4>All years</h4>
+
+                  <LineChart
+                    title="Math proficiency over the years for { selectedSchool.name }"
+                    dataConfig="{{
+                      xs: {
+                        Actual: 'School year',
+                        Predicted: 'School year'
+                      },
+                      columns: [
+                        ['School year'].concat(schoolSubjectData(selectedSchool.years, 'm', 'percentPro', 100).map(d => d.year)),
+                        ['Actual'].concat(schoolSubjectData(selectedSchool.years, 'm', 'percentPro', 100).map(d => d.percentPro)),
+                        ['Predicted'].concat(schoolSubjectData(selectedSchool.years, 'm', 'predictedPro', 100).map(d => d.predictedPro))
+                      ]
+                    }}"
+                    xLabel="School year"
+                    yLabel="Percent proficient in Math"
+                    yMin="0"
+                    yMax="100"
+                    xMin="2012"
+                    xMax="2017"
+                    colors="{ [colorMath, colorPredicted] }"
+                  />
+                {:else}
+                  <p><em>No math data</em></p>
+                {/if}
+              </div>
+
+              <div class="col col-100 col-md-50">
+                <h3>Reading</h3>
+
+                {#if keyBy(selectedSchool.years[0].subjects, 'subject').r}
+                  <h4>{ selectedSchool.years[0].year }-{ selectedSchool.years[0].year + 1 } school year</h4>
+
+                  <p>
+                    Overall, the students who took this test did
+                    <strong class="highlight">
+                      { categoryNames[keyBy(selectedSchool.years[0].subjects, 'subject').r.oddsCategory] }
+                    </strong>
+                    for the year; given our model they were predicted to have a proficiency passing rate of
+                    { round(keyBy(selectedSchool.years[0].subjects, 'subject').r.predictedPro * 100, 0) }%
+                    but actually had a rate of
+                    { round(keyBy(selectedSchool.years[0].subjects, 'subject').r.percentPro * 100, 0) }%.
+                  </p>
+
+                  <h4>All years</h4>
+
+                  <LineChart
+                    title="Reading proficiency over the years for { selectedSchool.name }"
+                    dataConfig="{{
+                      xs: {
+                        Actual: 'School year',
+                        Predicted: 'School year'
+                      },
+                      columns: [
+                        ['School year'].concat(schoolSubjectData(selectedSchool.years, 'r', 'percentPro', 100).map(d => d.year)),
+                        ['Actual'].concat(schoolSubjectData(selectedSchool.years, 'r', 'percentPro', 100).map(d => d.percentPro)),
+                        ['Predicted'].concat(schoolSubjectData(selectedSchool.years, 'r', 'predictedPro', 100).map(d => d.predictedPro))
+                      ]
+                    }}"
+                    xLabel="School year"
+                    yLabel="Percent proficient in Reading"
+                    yMin="0"
+                    yMax="100"
+                    xMin="2012"
+                    xMax="2017"
+                    colors="{[colorReading, colorPredicted]}"
+                  />
+                {:else}
+                  <p><em>No reading data</em></p>
+                {/if}
+
+              </div>
+            </div>
+          </div>
+        {:else}
+          <div class="no-selected-school">
+            Search or select a school to see how it has performed over the years.
+          </div>
+        {/if}
+      </div>
     </main>
 
-    <footer class="article-footer">
+    <footer class="article-footer container-lg">
       <h1>Credits</h1>
 
       <ul class="credits">
@@ -142,7 +212,7 @@
 
       <h1>Methodology</h1>
 
-      <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+      <p>The Star Tribune used a linear regression analysis to compare each school’s proficiency rate to an expected proficiency rate based on the school’s percentage of students on free or reduced-price lunch (a common proxy for estimating a school’s poverty rate). Only schools that tested at least 25 students, across all grades, were included in the analysis; alternative learning and special education schools were not included. Schools were identified as “falling short” if the actual proficiency rate was 10 percentage points or more lower than the expected rate. Schools were classified as “better than expected” if their rate was 10 percentage points or more greater than the expected rate. All schools between those marks were categorized “as expected.”</p>
 
     </footer>
   </section>
@@ -161,11 +231,13 @@
     sum
   } from "lodash";
   import LineChart from "./_line-chart.svelte.html";
+  import ScatterPlot from "./_scatter-plot.svelte.html";
 
   // Svelte object
   export default {
     components: {
-      LineChart
+      LineChart,
+      ScatterPlot
     },
 
     computed: {
@@ -252,12 +324,29 @@
             [property]: multiplier ? v * multiplier : v
           };
         });
+      },
+
+      // Make scatter data for poverty for a subject
+      schoolsPovertyScatter(schools, subject, year, currentYear) {
+        year = year || currentYear;
+
+        return filter(
+          map(schools, s => {
+            let y = find(s.years, { year });
+            let sub = y ? find(y.subjects, { subject }) : null;
+            return sub
+              ? {
+                  pctPoverty: y.pctPoverty * 100,
+                  percentPro: sub.percentPro * 100
+                }
+              : null;
+          })
+        );
       }
     },
 
     data() {
       return {
-        district: "all",
         school: "all",
         currentYear: 2017,
         categoryNames: {
@@ -269,7 +358,10 @@
           "out-state": "Out state",
           "core-cities": "Twin cities",
           suburbs: "Suburbs"
-        }
+        },
+        colorReading: "#ffa31a",
+        colorMath: "#7abdff",
+        colorPredicted: "#898989"
       };
     }
   };

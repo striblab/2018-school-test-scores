@@ -1,4 +1,4 @@
-.line-chart {
+.scatter-plot {
   figcaption {
     @extend .label;
 
@@ -22,5 +22,9 @@
 
   .tick line {
     display: none;
+  }
+
+  .chart-container {
+    height: 25em;
   }
 }
