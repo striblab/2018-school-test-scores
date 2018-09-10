@@ -22,16 +22,25 @@ window
     return response.json();
   })
   .then(scores => {
-    console.log(scores);
-    const app = new Content({
-      hydrate: true,
-      target: document.querySelector('.main-app-container'),
-      data: {
-        scoresBySchools: scores
-        //districts: scores.districts
-      }
-    });
+    window
+      .fetch('./assets/data/districts.json')
+      .then(response => {
+        return response.json();
+      })
+      .then(districts => {
+        console.log(scores);
+        console.log(districts);
+        const app = new Content({
+          hydrate: true,
+          target: document.querySelector('.main-app-container'),
+          data: {
+            scoresBySchools: scores,
+            districts
+          }
+        });
 
-    window.__app = app;
+        window.__app = app;
+      })
+      .catch(console.error);
   })
   .catch(console.error);

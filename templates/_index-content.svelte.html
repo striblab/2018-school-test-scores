@@ -79,7 +79,7 @@
             <option value="all">Select school</option>
 
             {#each scoresBySchools as school}
-              <option value="{ school.id }">{ school.name }</option>
+              <option value="{ school.id }">{ schoolDistrictName(school, scoresBySchools, districts) }</option>
             {/each}
           </select>
         </div>
@@ -92,7 +92,7 @@
               </h2>
 
               <p>
-                This <strong>{ selectedSchool.type.toLowerCase() }</strong> school is 1 of X schools in the the XBLANK district which saw X% beat the odds, Y% as expected, and Z% falling behind.
+                This <strong>{ selectedSchool.type.toLowerCase() }</strong> school is 1 of { selectedDistrict.schools } schools in the the { selectedDistrict.name } district which saw { round(selectedDistrict.modeled['3'].m / selectedDistrict.schools * 100, 0) }% beat the odds in math and { round(selectedDistrict.modeled['3'].r / selectedDistrict.schools * 100, 0) }% beat the odds in reading.
               </p>
 
               <p>
@@ -246,6 +246,13 @@
         return find(scoresBySchools, { id: school });
       },
 
+      // Get selected district
+      selectedDistrict: ({ selectedSchool, districts }) => {
+        return selectedSchool
+          ? find(districts, { id: selectedSchool.district })
+          : undefined;
+      },
+
       // Category breakdown for selected schools
       oddsCategoryBreakdown: ({ scoresBySchools, currentYear }) => {
         let breakdown = {};
@@ -324,6 +331,19 @@
             [property]: multiplier ? v * multiplier : v
           };
         });
+      },
+
+      // Combine school and district name
+      schoolDistrictName(school, schools, districts) {
+        if (!school || !schools || !districts) {
+          return;
+        }
+
+        let dup = find(schools, s => {
+          return s.name === school.name && s.id !== school.id;
+        });
+        let district = find(districts, { id: school.district });
+        return dup ? `${school.name} (${district.name})` : school.name;
       },
 
       // Make scatter data for poverty for a subject
