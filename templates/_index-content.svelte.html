@@ -34,34 +34,88 @@
           <div class="row">
             <div class="col col-100 col-md-50">
               <ScatterPlot
-                data="{ schoolsPovertyScatter(scoresBySchools, 'm', null, currentYear) }"
+                dataConfig="{{
+                  columns: [
+                    ['Beating the odds'].concat(
+                      schoolsPovertyScatter(scoresBySchools, 'm', null, currentYear, ['3']).map(d => d.percentPro)
+                    ),
+                    ['Beating the odds X'].concat(
+                      schoolsPovertyScatter(scoresBySchools, 'm', null, currentYear, ['3']).map(d => d.pctPoverty)
+                    ),
+                    ['As expected or falling behind'].concat(
+                      schoolsPovertyScatter(scoresBySchools, 'm', null, currentYear, ['1', '2']).map(d => d.percentPro)
+                    ),
+                    ['As expected or falling behind X'].concat(
+                      schoolsPovertyScatter(scoresBySchools, 'm', null, currentYear, ['1', '2']).map(d => d.pctPoverty)
+                    ),
+                    ['Predicted X', 0, 100],
+                    ['Predicted', regressionMath(0), regressionMath(100)]
+                  ],
+                  type: "scatter",
+                  types: {
+                    Predicted: "line"
+                  },
+                  xs: {
+                    'Beating the odds': 'Beating the odds X',
+                    'As expected or falling behind': 'As expected or falling behind X',
+                    Predicted: 'Predicted X'
+                  },
+                  colors: {
+                    'Beating the odds': colorMathBetter,
+                    'As expected or falling behind': colorMath,
+                    Predicted: colorPredicted
+                  }
+                }}"
                 xMin="{ 0 }"
                 xMax="{ 100 }"
                 yMin="{ 0 }"
                 yMax="{ 100 }"
-                xProp="pctPoverty"
-                yProp="percentPro"
                 xLabel="Percent of students who receive free or reduced-price lunch"
                 yLabel="Percent of students found proficient in Math"
-                title="Math"
-                regression="{ (x) => x * -0.5278627 + (0.79540900 * 100) }"
-                colors="{ [colorMath, colorPredicted].reverse() }" />
+                title="Math" />
             </div>
 
             <div class="col col-100 col-md-50">
               <ScatterPlot
-                data="{ schoolsPovertyScatter(scoresBySchools, 'r', null, currentYear) }"
+                dataConfig="{{
+                  columns: [
+                    ['Beating the odds'].concat(
+                      schoolsPovertyScatter(scoresBySchools, 'r', null, currentYear, ['3']).map(d => d.percentPro)
+                    ),
+                    ['Beating the odds X'].concat(
+                      schoolsPovertyScatter(scoresBySchools, 'r', null, currentYear, ['3']).map(d => d.pctPoverty)
+                    ),
+                    ['As expected or falling behind'].concat(
+                      schoolsPovertyScatter(scoresBySchools, 'r', null, currentYear, ['1', '2']).map(d => d.percentPro)
+                    ),
+                    ['As expected or falling behind X'].concat(
+                      schoolsPovertyScatter(scoresBySchools, 'r', null, currentYear, ['1', '2']).map(d => d.pctPoverty)
+                    ),
+                    ['Predicted X', 0, 100],
+                    ['Predicted', regressionReading(0), regressionReading(100)]
+                  ],
+                  type: "scatter",
+                  types: {
+                    Predicted: "line"
+                  },
+                  xs: {
+                    'Beating the odds': 'Beating the odds X',
+                    'As expected or falling behind': 'As expected or falling behind X',
+                    Predicted: 'Predicted X'
+                  },
+                  colors: {
+                    'Beating the odds': colorReadingBetter,
+                    'As expected or falling behind': colorReading,
+                    Predicted: colorPredicted
+                  }
+                }}"
                 xMin="{ 0 }"
                 xMax="{ 100 }"
                 yMin="{ 0 }"
                 yMax="{ 100 }"
-                xProp="pctPoverty"
-                yProp="percentPro"
                 xLabel="Percent of students who receive free or reduced-price lunch"
-                yLabel="Percent of students found proficient in Reading"
-                title="Reading"
-                regression="{ (x) => x * -0.5589525 + (0.8037092 * 100) }"
-                colors="{ [colorReading, colorPredicted].reverse() }" />
+                yLabel="Percent of students found proficient in Math"
+                title="Reading" />
             </div>
           </div>
         </div>
@@ -101,7 +155,7 @@
 
               {#if !selectedCurrentSubjects || !selectedCurrentSubjects.m || !selectedCurrentSubjects.m.predictedPro}
                 <p>
-                  <em>This school was not included in the predictive model this year because it did not have enough students.  Their test scores are still included below.</em>
+                  <em>This school was not included in our predictive model this year because it did not test enough students.  Their test scores are still included below.</em>
                 </p>
               {/if}
             </div>
@@ -365,13 +419,20 @@
       },
 
       // Make scatter data for poverty for a subject
-      schoolsPovertyScatter(schools, subject, year, currentYear) {
+      schoolsPovertyScatter(schools, subject, year, currentYear, categories) {
         year = year || currentYear;
 
         return filter(
           map(schools, s => {
             let y = find(s.years, { year });
             let sub = y ? find(y.subjects, { subject }) : null;
+            // Test if in categories, if needed
+            sub =
+              sub &&
+              (!categories ||
+                (categories && ~categories.indexOf(sub.oddsCategory)))
+                ? sub
+                : null;
             return sub
               ? {
                   pctPoverty: y.pctPoverty * 100,
@@ -403,8 +464,12 @@
           suburbs: "Suburbs"
         },
         colorReading: "#ffa31a",
+        colorReadingBetter: "#9d5d00",
         colorMath: "#7abdff",
-        colorPredicted: "#898989"
+        colorMathBetter: "#1d78af",
+        colorPredicted: "#898989",
+        regressionMath: x => x * -0.5278627 + 0.795409 * 100,
+        regressionReading: x => x * -0.5589525 + 0.8037092 * 100
       };
     }
   };

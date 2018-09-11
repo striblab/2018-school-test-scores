@@ -37,7 +37,7 @@
           // Update
           //chart.unload();
           chart.load({
-            columns: [this.get().xData, this.get().yData]
+            columns: this.get().dataConfig ? this.get().dataConfig.columns : []
           });
 
           return;
@@ -45,34 +45,18 @@
 
         chart = c3.generate({
           bindto: this.refs.chartContainer,
-          color: {
-            pattern: this.get().colors
-          },
           padding: {
-            right: 10
+            right: 10,
+            bottom: 15
           },
-          data: {
-            // x: this.get().xLabel,
-            // y: this.get().yLabel,
-            columns: filter([
-              this.get().xData,
-              this.get().yData,
-              this.get().regression ? this.get().regressionDataX : null,
-              this.get().regression ? this.get().regressionDataY : null
-            ]),
-            type: "scatter",
-            types: this.get().regression
-              ? {
-                  regressiony: "line"
-                }
-              : undefined,
-            xs: this.get().regression
-              ? {
-                  [this.get().yLabel]: this.get().xLabel,
-                  regressiony: "regressionx"
-                }
-              : undefined,
-            points: false
+          data: this.get().dataConfig ? this.get().dataConfig : {},
+          point: {
+            show: false,
+            focus: {
+              expand: {
+                enabled: true
+              }
+            }
           },
           axis: {
             x: {
@@ -121,7 +105,7 @@
             }
           },
           legend: {
-            show: false
+            position: "top"
           },
           tooltip: {
             show: false
@@ -185,8 +169,7 @@
         xProp: "x",
         yProp: "y",
         xLabel: "XXXXXX",
-        yLabel: "YYYYYY",
-        colors: ["#857aaa", "#5bbf48"]
+        yLabel: "YYYYYY"
       };
     }
   };
