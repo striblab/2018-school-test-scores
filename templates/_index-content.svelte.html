@@ -5,7 +5,7 @@
       <div class="hero">
         <h1>Beating the Odds</h1>
 
-        <p class="lead container-md">A Star Tribune analysis of standardized test scores to determine which schools are doing better than expected..</p>
+        <p class="lead container-md">A Star Tribune analysis of standardized test scores to determine which schools are doing better than expected.</p>
 
         <div class="byline">
           <address>By
@@ -25,9 +25,11 @@
     <main>
       <div class="intro">
         <div class="intro-text container-md">
-          <p>If you rank Minnesota’s public schools based on the percentage of students who meet or exceed proficiency expectations in math or reading on the Minnesota Comprehensive Assessments, the list generally will start with schools that have high concentrations of wealth and end with schools with high concentrations of poverty.  This long-standing and well-documented relationship between household income and school achievement means that schools serving large numbers of poor or other disadvantaged students have a different perspective on what achievement looks like. To level this playing field, the Star Tribune each year runs a regression analysis to compare each school’s proficiency rates in math and reading to what they were expected to achieve based on the school’s poverty level.</p>
+          <p>There is a <a href="https://eric.ed.gov/?id=ED544709" target="_blank" rel="noopener">long-standing and well-documented connection</a> between a school's poverty rate and achievement on standardized tests. As these charts show, schools with lower poverty rates tend to have higher scores. As a result, schools serving large numbers of poor or other disadvantaged students have a different perspective on what achievement looks like.</p>
 
-          <p>The lines on the charts below show the expected achievement level dropping as poverty levels get higher, and the dots show how Minnesota’s public schools fared on last year’s tests. The majority have proficiency rates that are about where you’d expect them to be. And then there are some schools that do considerably better than expected and others that fall short of expectations.</p>
+          <p>To level this playing field, the Star Tribune uses a statistical analysis called linear regression to compare each school's proficiency rates in math and reading to what they were expected to achieve based on its poverty level.</p>
+
+          <p>In the charts, the lines represent the predicted proficiency rate. The schools -- represented by dots -- that are within 10 percentage points of that line are considered to be doing about as expected, while those farther below the line are falling short of expectations. Along the top, though, is where you'll find the schools that are beating the odds.</p>
         </div>
 
         <div class="intro-charts container-xl">
@@ -146,7 +148,12 @@
               </h2>
 
               <p>
-                This <strong>{ selectedSchool.type.replace(/^(.*)\(/i, (m, p1) => `${p1.toLowerCase()} (`) }</strong> school is 1 of { selectedDistrict.schools } schools in the the { selectedDistrict.name } district which saw { round(selectedDistrict.modeled['3'].m / selectedDistrict.schools * 100, 0) }% beat the odds in math and { round(selectedDistrict.modeled['3'].r / selectedDistrict.schools * 100, 0) }% beat the odds in reading.
+                This <strong>{ selectedSchool.type.replace(/^(.*)\(/i, (m, p1) => `${p1.toLowerCase()} (`) }</strong> school
+                {#if selectedDistrict.schools <= 1}
+                  is the only school in the { selectedDistrict.name } district.
+                {:else}
+                  is 1 of { selectedDistrict.schools } schools in the the { selectedDistrict.name } district which saw { round(selectedDistrict.modeled['3'].m / selectedDistrict.schools * 100, 0) }% beat the odds in math and { round(selectedDistrict.modeled['3'].r / selectedDistrict.schools * 100, 0) }% beat the odds in reading.
+                {/if}
               </p>
 
               <p>
@@ -211,7 +218,7 @@
                   <h4>{ selectedCurrentSubjects.year }-{ selectedCurrentSubjects.year + 1 } school year</h4>
 
                   <p>
-                    Overall, the students who took this test did
+                    Overall, student proficiency at this school
                     <strong class="highlight">
                       { categoryNarratives[selectedCurrentSubjects.r.oddsCategory] }
                     </strong>
