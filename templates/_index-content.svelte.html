@@ -132,13 +132,15 @@
         <div class="filtering">
           <span>Find your school:</span>
 
-          <select bind:value="school">
-            <option value="all">Select school</option>
+          <div class="select-group">
+            <select bind:value="school" placeholder="Select school" ref:schoolSelect>
+              <option value="">Select school</option>
 
-            {#each scoresBySchools as school}
-              <option value="{ school.id }">{ schoolDistrictName(school, scoresBySchools, districts) }</option>
-            {/each}
-          </select>
+              {#each scoresBySchools as school}
+                <option value="{ school.id }">{ schoolDistrictName(school, scoresBySchools, districts) }</option>
+              {/each}
+            </select>
+          </div>
         </div>
 
         {#if selectedSchool}
@@ -301,6 +303,19 @@
     components: {
       LineChart,
       ScatterPlot
+    },
+
+    oncreate() {
+      // Selectize
+      $(this.refs.schoolSelect).selectize({
+        create: false,
+        maxOptions: 500,
+        maxItems: 1,
+        closeAfterSelect: true,
+        onChange: value => {
+          this.set({ school: value });
+        }
+      });
     },
 
     computed: {

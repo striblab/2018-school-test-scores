@@ -18,14 +18,18 @@
   },
 
   "styles": {
-    "globals": ["http://static.startribune.com/assets/libs/c3/0.6.7/c3.min.css"]
+    "globals": [
+      "http://static.startribune.com/assets/libs/c3/0.6.7/c3.min.css",
+      "http://static.startribune.com/assets/libs/selectizejs/0.12.6/css/selectize.css"
+    ]
   },
   "js": {
     "globals": [
       "https://cdn.polyfill.io/v2/polyfill.min.js",
       "http://static.startribune.com/assets/libs/d3/5.7.0/d3.min.js",
       "http://static.startribune.com/assets/libs/c3/0.6.7/c3.min.js",
-      "http://static.startribune.com/assets/libs/d3-annotation/2.3.0/d3-annotation.js"
+      "http://static.startribune.com/assets/libs/d3-annotation/2.3.0/d3-annotation.js",
+      "http://static.startribune.com/assets/libs/selectizejs/0.12.6/js/standalone/selectize.min.js"
     ]
   },
   "publishToken": "d856c02f99a56da75a45923e650dc048",

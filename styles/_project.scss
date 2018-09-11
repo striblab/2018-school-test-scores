@@ -29,6 +29,14 @@ footer {
   font-style: italic;
 }
 
+// This style seems to already have lots of meaning on the site.
+.single {
+  min-height: 0;
+  vertical-align: baseline;
+  border: none;
+  width: auto;
+}
+
 .filtering {
   padding: 1em;
   margin-bottom: 2em;
@@ -36,10 +44,64 @@ footer {
   text-align: center;
 
   select {
-    display: inline-block;
-    max-width: 15em;
-    margin: 0 0.5em;
     vertical-align: baseline;
+  }
+
+  .select-group {
+    display: inline-block;
+    vertical-align: middle;
+    width: 50%;
+    max-width: 25em;
+  }
+
+  .selectize-control {
+    @include font-styles("benton-sans");
+
+    font-size: 1em;
+    text-align: left;
+    position: relative;
+    display: inline-block;
+    //vertical-align: middle;
+    width: 100%;
+  }
+
+  .selectize-input {
+    font-size: 1.15em;
+    width: 100%;
+    padding: 0.35em 0.75em;
+    //vertical-align: middle;
+
+    input[type="select-one"] {
+      width: 100%;
+      margin: 0;
+      font-size: 1.5em;
+    }
+  }
+
+  .selectize-dropdown-content {
+    max-height: 15em;
+  }
+
+  .selectize-dropdown {
+    position: absolute;
+
+    .option {
+      font-size: 1.15em;
+      padding: 0.35em 0.75em;
+
+      &.selected {
+        background-color: map-get($grays, "lighter");
+      }
+
+      &:hover {
+        cursor: pointer;
+        background-color: map-get($grays, "lightest");
+      }
+    }
+
+    .highlight {
+      padding: 0.25em 0.1em;
+    }
   }
 }
 
