@@ -16,6 +16,11 @@
     fill: #232323;
   }
 
+  .c3-axis-x-label,
+  .c3-axis-y-label {
+    stroke: map-get($grays, "medium");
+  }
+
   .c3-chart-line .c3-line {
     stroke-width: 4;
   }

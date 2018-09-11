@@ -109,9 +109,58 @@
           },
           tooltip: {
             show: false
+          },
+          interaction: {
+            enabled: false
+          },
+          onrendered: () => {
+            this.drawAnnotation();
           }
         });
+
+        window.__chart = chart;
+
         this.set({ chart });
+      },
+
+      drawAnnotation() {
+        if (!this.get().addAnnotation || !this.get().chart) {
+          return;
+        }
+        let chart = this.get().chart;
+
+        // remove annotation if there.
+        if (this.get().annotation) {
+          d3.select(this.refs.chartContainer)
+            .select(".annotation-group")
+            .remove();
+        }
+
+        // Create new annotation
+        let annotation = d3
+          .select(this.refs.chartContainer)
+          .select("svg .c3-chart-lines")
+          .append("g")
+          .attr("class", "annotation-group")
+          .call(
+            d3
+              .annotation()
+              .type(d3.annotationCallout)
+              .annotations([
+                {
+                  note: {
+                    label: "These schools are beating the odds",
+                    bgPadding: 20
+                  },
+                  className: "annotation",
+                  x: chart.internal.x(55),
+                  y: chart.internal.y(75),
+                  dx: chart.internal.x(14),
+                  dy: -1 * (chart.internal.y(0) - chart.internal.y(6))
+                }
+              ])
+          );
+        this.set({ annotation });
       },
 
       parseNumber(input) {

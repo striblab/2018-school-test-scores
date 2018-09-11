@@ -16,6 +16,15 @@
     fill: #232323;
   }
 
+  .annotation-note-label {
+    letter-spacing: 0.9px;
+  }
+
+  .c3-axis-x-label,
+  .c3-axis-y-label {
+    stroke: map-get($grays, "medium");
+  }
+
   .c3-circle {
     opacity: 0.9 !important;
   }
