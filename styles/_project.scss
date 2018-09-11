@@ -2,13 +2,17 @@
  * Project specific styling.
  */
 
+footer {
+  margin-bottom: 4em;
+}
+
 .highlight {
   white-space: nowrap;
   background-color: map-get($grays, "lighter");
 }
 
 .intro {
-  margin-bottom: 2em;
+  margin-bottom: 4em;
 
   .intro-text {
     margin-bottom: 2em;
@@ -16,6 +20,13 @@
 
   .intro-charts {
   }
+}
+
+.chart-loading {
+  font-size: 0.85em;
+  padding: 3em 1em;
+  text-align: center;
+  font-style: italic;
 }
 
 .filtering {
