@@ -42,6 +42,20 @@ footer {
   margin-bottom: 2em;
   background-color: map-get($grays, "lighter");
   text-align: center;
+  display: flex;
+
+  .label-group {
+    display: none;
+
+    @include media-breakpoint-up("sm") {
+      display: block;
+    }
+  }
+
+  label {
+    display: block;
+    padding: 0.75em 1em 0 0;
+  }
 
   select {
     vertical-align: baseline;
@@ -50,8 +64,7 @@ footer {
   .select-group {
     display: inline-block;
     vertical-align: middle;
-    width: 50%;
-    max-width: 25em;
+    flex: 2;
   }
 
   .selectize-control {

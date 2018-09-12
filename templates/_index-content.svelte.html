@@ -130,10 +130,12 @@
         </div>
 
         <div class="filtering">
-          <span>Find your school:</span>
+          <div class="label-group">
+            <label for="school-select">Find your school:</label>
+          </div>
 
           <div class="select-group">
-            <select bind:value="school" placeholder="Select school" ref:schoolSelect>
+            <select id="school-select" bind:value="school" placeholder="Select school" ref:schoolSelect>
               <option value="">Select school</option>
 
               {#each scoresBySchools as school}
@@ -297,6 +299,7 @@
   } from "lodash";
   import LineChart from "./_line-chart.svelte.html";
   import ScatterPlot from "./_scatter-plot.svelte.html";
+  /* global $ */
 
   // Svelte object
   export default {
@@ -310,7 +313,7 @@
       if ($ && $.fn.selectize) {
         $(this.refs.schoolSelect).selectize({
           create: false,
-          maxOptions: 500,
+          maxOptions: 1800,
           maxItems: 1,
           closeAfterSelect: true,
           onChange: value => {
