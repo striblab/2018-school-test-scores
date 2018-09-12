@@ -9,15 +9,15 @@
 
         <div class="byline">
           <address>By
-            <a rel="author" href="http://www.startribune.com/maryjo-webster/303594441/">MaryJo Webster</a>
+            <a rel="author" href="http://www.startribune.com/maryjo-webster/303594441/" class="text-nowrap">MaryJo Webster</a>
             and
-            <a rel="author" href="http://www.startribune.com/alan-palazzolo/440928273/">Alan Palazzolo</a>
+            <a rel="author" href="http://www.startribune.com/alan-palazzolo/440928273/" class="text-nowrap">Alan Palazzolo</a>
           </address>
 
           <span class="spacer"></span>
-          Star Tribune
+          <span class="text-nowrap">Star Tribune</span>
           <span class="spacer-alt"></span>
-          <time pubdate datetime="2018-09-13T00:00:00">Septermber 13, 2018 &mdash; 12:00am</time>
+          <time pubdate datetime="2018-09-13T00:00:00">September 13, 2018 &mdash; 12:00am</time>
         </div>
       </div>
     </header>
@@ -25,7 +25,7 @@
     <main>
       <div class="intro">
         <div class="intro-text container-md">
-          <p>There is a <a href="https://eric.ed.gov/?id=ED544709" target="_blank" rel="noopener">long-standing and well-documented connection</a> between a school's poverty rate and achievement on standardized tests. As these charts show, schools with lower poverty rates tend to have higher scores. As a result, schools serving large numbers of poor or other disadvantaged students have a different perspective on what achievement looks like.</p>
+          <p>There is a <a href="https://eric.ed.gov/?id=ED544709" target="_blank" rel="noopener">long-standing and well-documented connection</a> between a school's poverty rate and achievement on standardized tests. As these charts show, schools with lower poverty rates tend to have higher scores. As a result, schools serving large numbers of poor have a different perspective on what achievement looks like.</p>
 
           <p>To level this playing field, the Star Tribune uses a statistical analysis called linear regression to compare each school's proficiency rates in math and reading to what it was expected to achieve based on its poverty level.</p>
 
@@ -117,7 +117,7 @@
                 yMin="{ 0 }"
                 yMax="{ 100 }"
                 xLabel="Percent of students who receive free or reduced-price lunch"
-                yLabel="Percent of students found proficient in Math"
+                yLabel="Percent of students found proficient in Reading"
                 title="Reading" />
             </div>
           </div>
@@ -126,7 +126,7 @@
 
       <div class="school-search container-lg">
         <div class="container-md text-center">
-          <p>Use the search tool below to find out whether your school is beating the odds.</p>
+          <p>Use the search tool below to find out whether your school is beating the odds.  Either select from the list or start typing a school name.</p>
         </div>
 
         <div class="filtering">
@@ -186,7 +186,7 @@
                     <strong class="highlight">
                       { categoryNarratives[selectedCurrentSubjects.m.oddsCategory] }
                     </strong>
-                    for the year; given our model they were predicted to have a proficiency passing rate of
+                    for the year; given our model they were predicted to have a proficiency rate of
                     { round(selectedCurrentSubjects.m.predictedPro * 100, 0) }%
                     but actually had a rate of
                     { round(selectedCurrentSubjects.m.percentPro * 100, 0) }%.

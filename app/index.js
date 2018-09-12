@@ -15,24 +15,28 @@
 // Utilize templates on the client.  Get the main content template.
 import Content from '../templates/_index-content.svelte.html';
 
+// Location of assets
+const assets =
+  '//static.startribune.com/news/projects/all/2018-school-test-scores/assets';
+
 // Get data for client
 window
-  .fetch('./assets/data/scores-by-schools.json')
+  .fetch(`${assets}/data/scores-by-schools.json`)
   .then(response => {
     return response.json();
   })
   .then(scores => {
     window
-      .fetch('./assets/data/districts.json')
+      .fetch(`${assets}/data/districts.json`)
       .then(response => {
         return response.json();
       })
       .then(districts => {
-        console.log(scores);
-        console.log(districts);
+        // console.log(scores);
+        // console.log(districts);
         const app = new Content({
           hydrate: true,
-          target: document.querySelector('.main-app-container'),
+          target: document.querySelector('.article-lcd-body-content'),
           data: {
             scoresBySchools: scores,
             districts
