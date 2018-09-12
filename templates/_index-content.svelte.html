@@ -27,9 +27,9 @@
         <div class="intro-text container-md">
           <p>There is a <a href="https://eric.ed.gov/?id=ED544709" target="_blank" rel="noopener">long-standing and well-documented connection</a> between a school's poverty rate and achievement on standardized tests. As these charts show, schools with lower poverty rates tend to have higher scores. As a result, schools serving large numbers of poor or other disadvantaged students have a different perspective on what achievement looks like.</p>
 
-          <p>To level this playing field, the Star Tribune uses a statistical analysis called linear regression to compare each school's proficiency rates in math and reading to what they were expected to achieve based on its poverty level.</p>
+          <p>To level this playing field, the Star Tribune uses a statistical analysis called linear regression to compare each school's proficiency rates in math and reading to what it was expected to achieve based on its poverty level.</p>
 
-          <p>In the charts, the lines represent the predicted proficiency rate. The schools -- represented by dots -- that are within 10 percentage points of that line are considered to be doing about as expected, while those farther below the line are falling short of expectations. Along the top, though, is where you'll find the schools that are beating the odds.</p>
+          <p>In the charts, the lines represent the predicted proficiency rate. The schools &mdash; represented by dots &mdash; that are within 10 percentage points of that line are considered to be doing about as expected, while those farther below the line are falling short of expectations. Along the top, though, is where you'll find the schools that are beating the odds.</p>
         </div>
 
         <div class="intro-charts container-xl">
@@ -162,7 +162,9 @@
               </p>
 
               <p>
-                For the { selectedSchool.years[0].year }-{ selectedSchool.years[0].year + 1 } school year, there were <strong>{ formatNumber(selectedSchool.years[0].enrollment) } students</strong> enrolled in this school, { formatNumber(round(selectedSchool.years[0].pctMinority * 100, 0)) }% counted as minorities and { formatNumber(round(selectedSchool.years[0].pctPoverty * 100, 0)) }% received free or reduced-price lunch.
+                For the { selectedSchool.years[0].year }-{ selectedSchool.years[0].year + 1 } school year, there were <strong>{ formatNumber(selectedSchool.years[0].enrollment) } students</strong> enrolled in this school,
+                <!-- { formatNumber(round(selectedSchool.years[0].pctMinority * 100, 0)) }% counted as minorities and  -->
+                and { formatNumber(round(selectedSchool.years[0].pctPoverty * 100, 0)) }% students received free or reduced-price lunch.
               </p>
 
               {#if !selectedCurrentSubjects || !selectedCurrentSubjects.m || !selectedCurrentSubjects.m.predictedPro}
@@ -279,8 +281,7 @@
 
       <h1>Methodology</h1>
 
-      <p>The Star Tribune used a linear regression analysis to compare each school’s proficiency rate to an expected proficiency rate based on the school’s percentage of students on free or reduced-price lunch (a common proxy for estimating a school’s poverty rate). Only schools that tested at least 25 students, across all grades, were included in the analysis; alternative learning and special education schools were not included. Schools were identified as “falling short” if the actual proficiency rate was 10 percentage points or more lower than the expected rate. Schools were classified as “better than expected” if their rate was 10 percentage points or more greater than the expected rate. All schools between those marks were categorized “as expected.”</p>
-
+      <p>The Star Tribune used a linear regression analysis to compare each school's proficiency rate to an expected proficiency rate based on the school's percentage of students on free or reduced-price lunch (a common proxy for estimating a school's poverty rate). Only schools that tested at least 25 students, across all grades, were included in the analysis; alternative learning and special education schools were not included. Schools were identified as "falling short" if the actual proficiency rate was 10 percentage points or more lower than the expected rate. Schools were classified as "better than expected" if their rate was 10 percentage points or more greater than the expected rate. All schools between those marks were categorized "as expected."</p>
     </footer>
   </section>
 </div>
