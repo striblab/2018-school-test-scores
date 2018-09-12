@@ -314,6 +314,11 @@
     },
 
     oncreate() {
+      // Hack back in share
+      if (this.get().attachShare) {
+        this.get().attachShare();
+      }
+
       // Selectize
       if ($ && $.fn.selectize) {
         $(this.refs.schoolSelect).selectize({
