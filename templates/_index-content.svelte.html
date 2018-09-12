@@ -165,7 +165,7 @@
 
               {#if !selectedCurrentSubjects || !selectedCurrentSubjects.m || !selectedCurrentSubjects.m.predictedPro}
                 <p>
-                  <em>This school was not included in our predictive model this year because it did not test enough students.  Their test scores are still included below.</em>
+                  <em>This school was not included in our predictive model this year because it did not test enough students.  Their historical test scores are still included below.</em>
                 </p>
               {/if}
             </div>
@@ -174,7 +174,7 @@
               <div class="col col-100 col-md-50">
                 <h3>Math</h3>
 
-                {#if selectedCurrentSubjects.m && selectedCurrentSubjects.m.predictedPro}
+                {#if selectedCurrentSubjects && selectedCurrentSubjects.m && selectedCurrentSubjects.m.predictedPro}
                   <h4>{ selectedCurrentSubjects.year }-{ selectedCurrentSubjects.year + 1 } school year</h4>
 
                   <p>
@@ -217,7 +217,7 @@
               <div class="col col-100 col-md-50">
                 <h3>Reading</h3>
 
-                {#if selectedCurrentSubjects.r && selectedCurrentSubjects.r.predictedPro}
+                {#if selectedCurrentSubjects && selectedCurrentSubjects.r && selectedCurrentSubjects.r.predictedPro}
                   <h4>{ selectedCurrentSubjects.year }-{ selectedCurrentSubjects.year + 1 } school year</h4>
 
                   <p>
@@ -307,15 +307,17 @@
 
     oncreate() {
       // Selectize
-      $(this.refs.schoolSelect).selectize({
-        create: false,
-        maxOptions: 500,
-        maxItems: 1,
-        closeAfterSelect: true,
-        onChange: value => {
-          this.set({ school: value });
-        }
-      });
+      if ($ && $.fn.selectize) {
+        $(this.refs.schoolSelect).selectize({
+          create: false,
+          maxOptions: 500,
+          maxItems: 1,
+          closeAfterSelect: true,
+          onChange: value => {
+            this.set({ school: value });
+          }
+        });
+      }
     },
 
     computed: {
