@@ -2,6 +2,55 @@
  * Project specific styling.
  */
 
+ p {
+  -webkit-font-smoothing: antialiased;
+}
+
+text {
+  font-family: "Benton Sans", Helvetica, Arial, sans-serif !important;
+}
+
+.article-author-hcard-item, .article-author-hcard__twitter, .article-author-hcard__email, .article-author-hcard__phone {
+  font-family: "Benton Sans Condensed Medium",Helvetica,Arial,sans-serif !important;
+  font-size: 13px;
+  display: inline-block;
+  margin-right: 1em;
+  margin-bottom: 1em;
+  color: #909090 !important;
+  text-decoration: none !important;
+}
+
+  p {
+    -webkit-font-smoothing: antialiased;
+  }
+
+.article-author-hcard {
+  margin-bottom: 1em;
+}
+
+.article-author-contact {
+  border-top: 1px solid #d3d3d3;
+  margin-top: 2em;
+  padding-top: 1em;
+  zoom: 1;
+  clear: both;
+  margin-left: auto;
+  margin-right: auto;
+  width: 500px;
+}
+
+.article-author-contact a {
+  font-weight:lighter !important;
+}
+
+.article-author-contact p {
+ margin-bottom: 0 !important;
+}
+
+.chart-container {
+  pointer-events:none !important;
+}
+
 .hero {
   h1 {
     font-size: 5em;
@@ -27,6 +76,13 @@ footer {
 .highlight {
   white-space: nowrap;
   background-color: map-get($grays, "lighter");
+  padding: 4px;
+  color: #000000;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 0 7px;
+  margin-bottom: 3px;
+  display: inline-block;
 }
 
 .text-nowrap {
@@ -189,4 +245,12 @@ footer {
   padding: 5em 1em 7em;
   color: map-get($grays, "light");
   text-align: center;
+}
+
+
+
+@media (max-width:500px) {
+  .article-author-contact {
+    width: 100%;
+  }
 }

@@ -9,15 +9,16 @@
 
         <div class="byline">
           <address>By
-            <a rel="author" href="http://www.startribune.com/maryjo-webster/303594441/" class="text-nowrap">MaryJo Webster</a>
-            and
+            <a rel="author" href="http://www.startribune.com/maryjo-webster/303594441/" class="text-nowrap">MaryJo Webster</a>,
             <a rel="author" href="http://www.startribune.com/alan-palazzolo/440928273/" class="text-nowrap">Alan Palazzolo</a>
+            and
+            <a rel="author" href="http://www.startribune.com/jeff-hargarten/274254381/">Jeff Hargarten</a>
           </address>
 
           <span class="spacer"></span>
           <span class="text-nowrap">Star Tribune</span>
           <span class="spacer-alt"></span>
-          <time pubdate datetime="2018-09-13T00:00:00">September 13, 2018 &mdash; 12:00am</time>
+          <time pubdate datetime="2019-09-06T00:00:00">Updated September 5, 2019</time>
         </div>
 
         <div class="share-placeholder">
@@ -29,10 +30,10 @@
     <main>
       <div class="intro">
         <div class="intro-text container-md">
-          <p>There is a <a href="https://eric.ed.gov/?id=ED544709" target="_blank" rel="noopener">long-standing and well-documented connection</a> between a school's poverty rate and achievement on standardized tests. As these charts show, schools with lower poverty rates tend to have higher scores. As a result, schools serving large numbers of poor have a different perspective on what achievement looks like.</p>
+          <p>There is a <a href="https://eric.ed.gov/?id=ED544709" target="_blank" rel="noopener">long-standing and well-documented connection</a> between a school's poverty rate and achievement on standardized tests. As these charts show, schools with lower poverty rates tend to have higher scores. As a result, schools serving large numbers of poor students have a different perspective on what achievement looks like.</p>
 
           <p>To level this playing field, the Star Tribune uses a statistical analysis called linear regression to compare each school's proficiency rates in math and reading to what it was expected to achieve based on its poverty level.</p>
-
+         
           <p>In the charts, the lines represent the predicted proficiency rate. The schools &mdash; represented by dots &mdash; that are within 10 percentage points of that line are considered to be doing about as expected, while those farther below the line are falling short of expectations. Along the top, though, is where you'll find the schools that are beating the odds.</p>
         </div>
 
@@ -77,9 +78,9 @@
                 xMax="{ 100 }"
                 yMin="{ 0 }"
                 yMax="{ 100 }"
-                xLabel="Percent of students who receive free or reduced-price lunch"
+                xLabel="Percent of students eligible for free or reduced-price lunch"
                 yLabel="Percent of students found proficient in Math"
-                title="Math" />
+                title="Math 2018-19" />
             </div>
 
             <div class="col col-100 col-md-50">
@@ -120,16 +121,18 @@
                 xMax="{ 100 }"
                 yMin="{ 0 }"
                 yMax="{ 100 }"
-                xLabel="Percent of students who receive free or reduced-price lunch"
+                xLabel="Percent of students eligible for free or reduced-price lunch"
                 yLabel="Percent of students found proficient in Reading"
-                title="Reading" />
+                title="Reading 2018-19" />
             </div>
           </div>
         </div>
       </div>
 
       <div class="school-search container-lg">
-        <div class="container-md text-center">
+        <div class="container-md">
+           <p>In the 2018-19 school year, math scores on the Minnesota Comprehensive Assessments (MCAs)  dropped statewide -- and so did the number of high-poverty schools beating the odds. Just 13 percent of those schools performed better than expected, down from 19 percent a year earlier. That follows a longer trend; a few years ago, a third or more of high-poverty schools were beating the odds in math. In reading, the number of schools performing better than expected has remained fairly flat in recent years.</p>
+
           <p>Use the search tool below to find out whether your school is beating the odds.  Either select from the list or start typing a school name.</p>
         </div>
 
@@ -161,19 +164,23 @@
                 {#if selectedDistrict.schools <= 1}
                   is the only school in the { selectedDistrict.name } district.
                 {:else}
-                  is 1 of { selectedDistrict.schools } schools in the the { selectedDistrict.name } district which saw { round(selectedDistrict.modeled['3'].m / selectedDistrict.schools * 100, 0) }% beat the odds in math and { round(selectedDistrict.modeled['3'].r / selectedDistrict.schools * 100, 0) }% beat the odds in reading.
+                  is 1 of { selectedDistrict.schools } schools in the { selectedDistrict.name } district. The district saw { round(selectedDistrict.modeled['3'].m / selectedDistrict.schools * 100, 0) }% of its schools beat the odds in math and { round(selectedDistrict.modeled['3'].r / selectedDistrict.schools * 100, 0) }% beat the odds in reading.
                 {/if}
               </p>
 
               <p>
                 For the { selectedSchool.years[0].year }-{ selectedSchool.years[0].year + 1 } school year, there were <strong>{ formatNumber(selectedSchool.years[0].enrollment) } students</strong> enrolled in this school,
                 <!-- { formatNumber(round(selectedSchool.years[0].pctMinority * 100, 0)) }% counted as minorities and  -->
-                and { formatNumber(round(selectedSchool.years[0].pctPoverty * 100, 0)) }% students received free or reduced-price lunch.
+                {#if selectedDistrict.pct_poverty_public != 'Not public'}
+                and { formatNumber(round(selectedSchool.years[0].pctPoverty * 100, 0)) }% of students received free or reduced-price lunch.
+                {:else}
+                and the percentage of students received free or reduced-price lunch is not public.
+                {/if}
               </p>
 
               {#if !selectedCurrentSubjects || !selectedCurrentSubjects.m || !selectedCurrentSubjects.m.predictedPro}
                 <p>
-                  <em>This school was not included in our predictive model this year because it did not test enough students.  Their historical test scores are still included below.</em>
+                  <em>This school was not included in our predictive model this year because it did not test enough students.  Data might not be available for all years*.</em>
                 </p>
               {/if}
             </div>
@@ -217,7 +224,7 @@
                   yMin="0"
                   yMax="100"
                   xMin="2012"
-                  xMax="2017"
+                  xMax="2018"
                   colors="{ [colorMath, colorPredicted] }"
                 />
               </div>
@@ -260,7 +267,7 @@
                   yMin="0"
                   yMax="100"
                   xMin="2012"
-                  xMax="2017"
+                  xMax="2018"
                   colors="{[colorReading, colorPredicted]}"
                 />
               </div>
@@ -280,13 +287,36 @@
       <ul class="credits">
         <li>Data analysis by MaryJo Webster</li>
         <li>Design and development by Alan Palazzolo</li>
-        <li>Previous version by Jeff Hargarten</li>
+        <li>Previous data years and updates by Jeff Hargarten</li>
       </ul>
+
+      <h1>Notes</h1>
+
+      <p>*Missing data points in the line charts could either mean the school was not in existence that year or that the Minnesota Department of Education did not make test results available to the public because less than 10 students were tested in each grade.</p>
 
       <h1>Methodology</h1>
 
       <p>The Star Tribune used a linear regression analysis to compare each school's proficiency rate to an expected proficiency rate based on the school's percentage of students on free or reduced-price lunch (a common proxy for estimating a school's poverty rate). Only schools that tested at least 25 students, across all grades, were included in the analysis; alternative learning and special education schools were not included. Schools were identified as "falling short" if the actual proficiency rate was 10 percentage points or more lower than the expected rate. Schools were classified as "better than expected" if their rate was 10 percentage points or more greater than the expected rate. All schools between those marks were categorized "as expected."</p>
     </footer>
+  </section>
+
+  <section class="container-lg">
+      <div class="article-author-contact">
+          <div class="article-author-hcard">
+              <p></p><p><span style="font-size: 10pt; font-family: Arial;"><strong>MaryJo Webster </strong>is the data editor for the Star Tribune. She teams up with reporters to analyze data for stories across a wide range of topics and beats.</span></p><p></p>
+              <p><a class="article-author-hcard__email" target="_blank" href="mailto:maryjo.webster@startribune.com?subject=Beating the Odds" data-linkname="maryjo.webster@startribune.com" data-linktype="email" data-modulename="Article" data-moduletype="zone1-content" data-position="0-1-author">maryjo.webster@startribune.com</a>
+              <a class="article-author-hcard__phone" href="tel:612-673-1789" data-linkname="612-673-1789" data-linktype="phone" data-modulename="Article" data-moduletype="zone1-content" data-position="0-1-author">612-673-1789</a>
+              <a class="article-author-hcard__twitter" href="http://twitter.com/MaryJoWebster" target="_blank" data-linkname="MaryJoWebster" data-linktype="twitter" data-modulename="Article" data-moduletype="zone1-content" data-position="0-1-author">MaryJoWebster</a></p>
+      </div>
+     </div>
+    <div class="article-author-contact">
+        <div class="article-author-hcard">
+            <p></p><p><span style="font-size: 10pt; font-family: Arial;"><strong>Jeff Hargarten </strong>is a data journalist for the Star Tribune focusing on data-driven reporting and visualization. He has covered elections, technology, criminal justice, demographics and public health.</span></p><p></p>
+            <p><a class="article-author-hcard__email" target="_blank" href="mailto:Jeff.Hargarten@startribune.com?subject=Beating the Odds" data-linkname="Jeff.Hargarten@startribune.com" data-linktype="email" data-modulename="Article" data-moduletype="zone1-content" data-position="0-1-author">Jeff.Hargarten@startribune.com</a>
+            <a class="article-author-hcard__phone" href="tel:612-673-4642" data-linkname="612-673-4642" data-linktype="phone" data-modulename="Article" data-moduletype="zone1-content" data-position="0-1-author">612-673-4642</a>
+            <a class="article-author-hcard__twitter" href="http://twitter.com/JeffHargarten" target="_blank" data-linkname="JeffHargarten" data-linktype="twitter" data-modulename="Article" data-moduletype="zone1-content" data-position="0-1-author">JeffHargarten</a></p>
+    </div>
+   </div>
   </section>
 </div>
 
@@ -485,7 +515,7 @@
     data() {
       return {
         school: "all",
-        currentYear: 2017,
+        currentYear: 2018,
         categoryNames: {
           ["1"]: "Falling behind",
           ["2"]: "As expected",
