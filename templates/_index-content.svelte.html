@@ -164,7 +164,7 @@
                 {#if selectedDistrict.schools <= 1}
                   is the only school in the { selectedDistrict.name } district.
                 {:else}
-                  is 1 of { selectedDistrict.schools } schools in the { selectedDistrict.name } district. The district saw { round(selectedDistrict.modeled['3'].m / selectedDistrict.schools * 100, 0) }% of its schools beat the odds in math and { round(selectedDistrict.modeled['3'].r / selectedDistrict.schools * 100, 0) }% beat the odds in reading.
+                  is 1 of { selectedDistrict.schools } schools in the { selectedDistrict.name } district.
                 {/if}
               </p>
 

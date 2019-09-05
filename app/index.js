@@ -16,6 +16,7 @@
 import Content from '../templates/_index-content.svelte.html';
 
 // Location of assets
+
 const assets =
   '//static.startribune.com/news/projects/all/2018-school-test-scores/assets';
 
