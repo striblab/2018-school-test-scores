@@ -171,11 +171,11 @@
               <p>
                 For the { selectedSchool.years[0].year }-{ selectedSchool.years[0].year + 1 } school year, there were <strong>{ formatNumber(selectedSchool.years[0].enrollment) } students</strong> enrolled in this school,
                 <!-- { formatNumber(round(selectedSchool.years[0].pctMinority * 100, 0)) }% counted as minorities and  -->
-                {#if selectedDistrict.pct_poverty_public != 'Not public'}
-                and { formatNumber(round(selectedSchool.years[0].pctPoverty * 100, 0)) }% of students received free or reduced-price lunch.
+                <!-- {#if selectedSchool.years[0].pct_poverty_public != 'Not public'}
+                and { selectedSchool.years[0].pct_poverty_public } of students received free or reduced-price lunch.
                 {:else}
                 and the percentage of students received free or reduced-price lunch is not public.
-                {/if}
+                {/if} -->
               </p>
 
               {#if !selectedCurrentSubjects || !selectedCurrentSubjects.m || !selectedCurrentSubjects.m.predictedPro}
